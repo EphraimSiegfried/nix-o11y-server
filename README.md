@@ -44,7 +44,7 @@ chmod 600 "$temp/etc/ssh/"*_key
 
 nix run github:nix-community/nixos-anywhere -- \
     --generate-hardware-config nixos-facter ./modules/facter.json \
-    --flake github:EphraimSiegfried#o11y \
+    --flake github:EphraimSiegfried/nix-o11y-server#o11y \
     --extra-files "$temp" \
     --target-host root@<ip address>
 ```
