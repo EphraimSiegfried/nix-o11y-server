@@ -20,6 +20,7 @@
             {
               name = "Jellyfin";
               url = "https://jelly.${main_domain}/health";
+              group = "Media";
               interval = default_interval;
               conditions = [
                 "[STATUS] == 200"
@@ -31,6 +32,7 @@
               name = "Jellyseerr";
               url = "https://js.${main_domain}";
               interval = default_interval;
+              group = "Media";
               conditions = [
                 "[STATUS] == 200"
                 "[RESPONSE_TIME] < 300"
@@ -38,8 +40,9 @@
             }
             {
               name = "Sonarr";
-              url = "https://radarr.${main_domain}/ping";
+              url = "https://sonarr.${main_domain}/ping";
               interval = default_interval;
+              group = "Media";
               conditions = [
                 "[STATUS] == 200"
                 "[BODY].status == OK"
@@ -50,6 +53,7 @@
               name = "Radarr";
               url = "https://radarr.${main_domain}/ping";
               interval = default_interval;
+              group = "Media";
               conditions = [
                 "[STATUS] == 200"
                 "[BODY].status == OK"
@@ -60,9 +64,38 @@
               name = "Prowlarr";
               url = "https://prowlarr.${main_domain}/ping";
               interval = default_interval;
+              group = "Media";
               conditions = [
                 "[STATUS] == 200"
                 "[BODY].status == OK"
+                "[RESPONSE_TIME] < 300"
+              ];
+            }
+            {
+              name = "Bazarr";
+              url = "https://bazarr.${main_domain}";
+              interval = default_interval;
+              group = "Media";
+              conditions = [
+                "[STATUS] == 200"
+                "[RESPONSE_TIME] < 300"
+              ];
+            }
+            {
+              name = "Paperless";
+              url = "https://paperless.${main_domain}";
+              interval = default_interval;
+              conditions = [
+                "[STATUS] == 200"
+                "[RESPONSE_TIME] < 300"
+              ];
+            }
+            {
+              name = "Nextcloud";
+              url = "https://cloud.${main_domain}";
+              interval = default_interval;
+              conditions = [
+                "[STATUS] == 200"
                 "[RESPONSE_TIME] < 300"
               ];
             }
@@ -79,7 +112,7 @@
             {
               name = "Ephraim's Blog";
               url = "https://ephraimsiegfried.ch";
-              interval = default_interval;
+              interval = "10m";
               conditions = [
                 "[STATUS] == 200"
                 "[RESPONSE_TIME] < 300"
