@@ -24,7 +24,7 @@ nix run .#vm
 
 After starting the VM you should be able to access all services on the host
 machine under the `localhost` domain using the port 8443, e.g.
-https://gatus.localhost:8443. Note that the VM will use a self signed
+https://health.localhost:8443. Note that the VM will use a self signed
 certificate for SSL which the browser won't trust.
 
 ## Deployment
