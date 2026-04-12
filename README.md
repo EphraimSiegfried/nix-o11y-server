@@ -11,6 +11,9 @@ The Server contains the following stack:
 | Alertmanager (TODO)  | For triggering alerts        |
 | Matrix Server (TODO) | For sending alerts           |
 
+The configuration follows the
+[Dendritic Pattern](https://github.com/Doc-Steve/dendritic-design-with-flake-parts).
+
 ## Test in a Virtual Machine
 
 You can run the server inside a VM with
