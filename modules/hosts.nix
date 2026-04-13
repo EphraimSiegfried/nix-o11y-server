@@ -11,6 +11,7 @@
         inputs.srvos.nixosModules.server
         user
         gatus
+        matrix
       ];
     in
     {
@@ -38,7 +39,10 @@
           ++ [
             vm
             caddy-vm
+            # TODO: why do I have to explicitly import config here?
+            ./config.nix
             {
+              domain = "localhost";
               system.stateVersion = "25.11";
               networking.hostName = "vm";
             }
