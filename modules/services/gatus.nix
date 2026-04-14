@@ -134,16 +134,6 @@
               ];
               alerts = [ { type = "matrix"; } ];
             }
-            {
-              name = "test alert";
-              url = "https://httpstat.us/500";
-              interval = "2s";
-              conditions = [
-                "[STATUS] == 200"
-              ];
-              alerts = [ { type = "matrix"; } ];
-            }
-
           ];
         };
       };
