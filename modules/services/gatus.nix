@@ -1,17 +1,16 @@
-{ config, ... }:
 {
-  myServices.gatus = {
-    subdomain = "health";
-    port = 9192;
-  };
-
   flake.modules.nixos.gatus =
+    { config, ... }:
     let
       main_domain = "qew.ch";
-      default_interval = "2m";
+      default_interval = "1m";
       matrix_url = "https://${config.myServices.matrix.subdomain}.${config.domain}";
     in
     {
+      myServices.gatus = {
+        subdomain = "health";
+        port = 9192;
+      };
       services.gatus = {
         enable = true;
         openFirewall = true;
@@ -21,7 +20,13 @@
           alerting.matrix = {
             server-url = matrix_url;
             access-token = "\${MATRIX_ACCESS_TOKEN}";
-            internal-room-id = "!alerts:${matrix_url}";
+            internal-room-id = "\${MATRIX_ROOM_ID}";
+            default-alert = {
+              description = "Service is down!";
+              send-on-resolved = true;
+              failure-threshold = 3;
+              success-threshold = 5;
+            };
           };
           endpoints = [
             {
@@ -34,6 +39,7 @@
                 "[BODY] == Healthy"
                 "[RESPONSE_TIME] < 300"
               ];
+              alerts.type = "matrix";
             }
             {
               name = "Jellyseerr";
@@ -44,6 +50,7 @@
                 "[STATUS] == 200"
                 "[RESPONSE_TIME] < 300"
               ];
+              alerts.type = "matrix";
             }
             {
               name = "Sonarr";
@@ -115,6 +122,7 @@
                 "[BODY].database == ok"
                 "[RESPONSE_TIME] < 300"
               ];
+              alerts.type = "matrix";
             }
             {
               name = "Ephraim's Blog";
@@ -124,12 +132,13 @@
                 "[STATUS] == 200"
                 "[RESPONSE_TIME] < 300"
               ];
+              alerts.type = "matrix";
             }
           ];
         };
       };
       sops.templates."gatus.env" = {
-        owner = config.systemd.services.gatus.serviceConfig.User;
+        # owner = config.systemd.services.gatus.serviceConfig.User;
         content = ''
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix/access-token"};
           MATRIX_ROOM_ID=${config.sops.placeholder."matrix/room-id"};

@@ -53,19 +53,21 @@ let
     };
 in
 {
-  options = {
-    primaryUser = lib.mkOption {
-      type = lib.types.submodule userOpts;
-      default = { };
-    };
-    domain = lib.mkOption {
-      type = lib.types.str;
-      default = "qew.ch";
-    };
-    myServices = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule serviceOpts);
-      default = { };
-      description = "Services to expose via nginx";
+  flake.modules.nixos.config = {
+    options = {
+      primaryUser = lib.mkOption {
+        type = lib.types.submodule userOpts;
+        default = { };
+      };
+      domain = lib.mkOption {
+        type = lib.types.str;
+        default = "qew.ch";
+      };
+      myServices = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.submodule serviceOpts);
+        default = { };
+        description = "Services to expose via nginx";
+      };
     };
   };
 }

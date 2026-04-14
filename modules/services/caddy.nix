@@ -1,6 +1,11 @@
-{ config, ... }:
 {
   flake.modules.nixos.caddy =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     let
       mkVhost = _name: svc: {
         "${svc.subdomain}.${config.domain}" = {
@@ -11,12 +16,6 @@
       };
       conf = config;
     in
-    {
-      pkgs,
-      lib,
-      config,
-      ...
-    }:
     {
       networking.firewall.allowedTCPPorts = [
         80
@@ -51,7 +50,12 @@
     };
 
   flake.modules.nixos.caddy-vm =
-    { pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       mkVhost = _name: svc: {
         "${svc.subdomain}.localhost" = {

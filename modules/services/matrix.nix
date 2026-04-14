@@ -1,25 +1,20 @@
-{ config, ... }:
-let
-  conf = config;
-in
 {
-
-  myServices.matrix = {
-    subdomain = "matrix";
-    port = 6167;
-  };
   flake.modules.nixos.matrix =
     { config, ... }:
     {
+      myServices.matrix = {
+        subdomain = "matrix";
+        port = 6167;
+      };
 
       services.matrix-conduit = {
         enable = true;
         settings.global = {
-          server_name = "${conf.myServices.matrix.subdomain}.${conf.domain}";
+          server_name = "${config.myServices.matrix.subdomain}.${config.domain}";
           address = "::1";
           database_backend = "rocksdb";
 
-          port = conf.myServices.matrix.port;
+          port = config.myServices.matrix.port;
 
           allow_registration = true;
           registration_token = config.sops.placeholder."matrix/registration_token";

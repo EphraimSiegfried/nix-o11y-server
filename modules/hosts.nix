@@ -10,8 +10,9 @@
       main_modules = with inputs.self.modules.nixos; [
         inputs.srvos.nixosModules.server
         user
-        gatus
-        matrix
+        # gatus
+        # matrix
+        config
       ];
     in
     {
@@ -39,8 +40,6 @@
           ++ [
             vm
             caddy-vm
-            # TODO: why do I have to explicitly import config here?
-            ./config.nix
             {
               domain = "localhost";
               system.stateVersion = "25.11";
