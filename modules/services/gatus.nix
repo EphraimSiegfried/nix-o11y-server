@@ -14,15 +14,13 @@
       services.gatus = {
         enable = true;
         openFirewall = true;
+        configFile = config.sops.templates."gatus.yaml".path;
         settings = {
           web.port = config.myServices.gatus.port;
 
           alerting.matrix = {
             server-url = matrix_url;
-            access-token = "$MATRIX_ACCESS_TOKEN";
-            internal-room-id = "$MATRIX_ROOM_ID";
             default-alert = {
-              description = "Service is down!";
               send-on-resolved = true;
               failure-threshold = 3;
               success-threshold = 5;
@@ -139,14 +137,17 @@
       };
       sops.secrets."matrix/access_token" = { };
       sops.secrets."matrix/room_id" = { };
-      sops.templates."gatus.env" = {
-        # gatus uses dynamicuser which makes it hard to give it ownership to the secret
+      sops.templates."gatus.yaml" = {
         mode = "0444";
-        content = ''
-          MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix/access_token"}
-          MATRIX_ROOM_ID=${config.sops.placeholder."matrix/room_id"}
-        '';
+        content = builtins.toJSON (
+          config.services.gatus.settings
+          // {
+            alerting.matrix = config.services.gatus.settings.alerting.matrix // {
+              access-token = config.sops.placeholder."matrix/access_token";
+              internal-room-id = config.sops.placeholder."matrix/room_id";
+            };
+          }
+        );
       };
-      systemd.services.gatus.serviceConfig.EnvironmentFile = config.sops.templates."gatus.env".path;
     };
 }

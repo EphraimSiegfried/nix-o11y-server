@@ -17,13 +17,32 @@
           port = config.myServices.matrix.port;
 
           allow_registration = true;
-          registration_token = config.sops.placeholder."matrix/registration_token";
         };
+        secretFile = config.sops.templates."conduit.env".path;
+      };
+      sops.templates."conduit.env" = {
+        # conduit uses dynamicuser which makes it hard to give it ownership to the secret
+        mode = "0444";
+        content = ''
+          CONDUIT_REGISTRATION_TOKEN=${config.sops.placeholder."matrix/registration_token"}
+        '';
       };
 
-      sops.secrets."matrix/registration_token" = {
-        # owner = config.systemd.services.matrix-conduit.serviceConfig.User;
-      };
+      sops.secrets."matrix/registration_token" = { };
 
     };
 }
+
+# Access token created with:
+# curl -XPOST 'https://your.homeserver/_matrix/client/v3/login' \
+#   -H 'Content-Type: application/json' \
+#   -d '{
+#     "type": "m.login.password",
+#     "identifier": {
+#       "type": "m.id.user",
+#       "user": "yourusername"
+#     },
+#     "password": "yourpassword",
+#     "device_id": "MY_BOT",
+#     "initial_device_display_name": "My Bot"
+#   }'
