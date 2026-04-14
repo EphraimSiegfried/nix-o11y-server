@@ -19,8 +19,8 @@
 
           alerting.matrix = {
             server-url = matrix_url;
-            access-token = "\${MATRIX_ACCESS_TOKEN}";
-            internal-room-id = "\${MATRIX_ROOM_ID}";
+            access-token = "$MATRIX_ACCESS_TOKEN";
+            internal-room-id = "$MATRIX_ROOM_ID";
             default-alert = {
               description = "Service is down!";
               send-on-resolved = true;
@@ -39,7 +39,7 @@
                 "[BODY] == Healthy"
                 "[RESPONSE_TIME] < 300"
               ];
-              alerts.type = "matrix";
+              alerts = [ { type = "matrix"; } ];
             }
             {
               name = "Jellyseerr";
@@ -50,7 +50,7 @@
                 "[STATUS] == 200"
                 "[RESPONSE_TIME] < 300"
               ];
-              alerts.type = "matrix";
+              alerts = [ { type = "matrix"; } ];
             }
             {
               name = "Sonarr";
@@ -122,7 +122,7 @@
                 "[BODY].database == ok"
                 "[RESPONSE_TIME] < 300"
               ];
-              alerts.type = "matrix";
+              alerts = [ { type = "matrix"; } ];
             }
             {
               name = "Ephraim's Blog";
@@ -130,18 +130,31 @@
               interval = "10m";
               conditions = [
                 "[STATUS] == 200"
-                "[RESPONSE_TIME] < 300"
+                "[RESPONSE_TIME] < 500"
               ];
-              alerts.type = "matrix";
+              alerts = [ { type = "matrix"; } ];
             }
+            {
+              name = "test alert";
+              url = "https://httpstat.us/500";
+              interval = "2s";
+              conditions = [
+                "[STATUS] == 200"
+              ];
+              alerts = [ { type = "matrix"; } ];
+            }
+
           ];
         };
       };
+      sops.secrets."matrix/access_token" = { };
+      sops.secrets."matrix/room_id" = { };
       sops.templates."gatus.env" = {
-        # owner = config.systemd.services.gatus.serviceConfig.User;
+        # gatus uses dynamicuser which makes it hard to give it ownership to the secret
+        mode = "0444";
         content = ''
-          MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix/access-token"};
-          MATRIX_ROOM_ID=${config.sops.placeholder."matrix/room-id"};
+          MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix/access_token"}
+          MATRIX_ROOM_ID=${config.sops.placeholder."matrix/room_id"}
         '';
       };
       systemd.services.gatus.serviceConfig.EnvironmentFile = config.sops.templates."gatus.env".path;

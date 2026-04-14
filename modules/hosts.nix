@@ -10,8 +10,8 @@
       main_modules = with inputs.self.modules.nixos; [
         inputs.srvos.nixosModules.server
         user
-        # gatus
-        # matrix
+        gatus
+        matrix
         config
       ];
     in
