@@ -58,7 +58,7 @@
     }:
     let
       mkVhost = _name: svc: {
-        "${svc.subdomain}.localhost" = {
+        "${svc.subdomain}.${config.domain}" = {
           extraConfig = ''
             tls internal
             reverse_proxy http://localhost:${toString svc.port}
