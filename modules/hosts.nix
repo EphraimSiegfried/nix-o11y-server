@@ -13,6 +13,8 @@
         gatus
         matrix
         config
+        prometheus
+        grafana
       ];
     in
     {
