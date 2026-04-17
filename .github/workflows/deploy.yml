@@ -1,0 +1,34 @@
+name: "Deploy"
+
+on:
+  workflow_call: 
+  workflow_dispatch: 
+  push:
+    branches: [ main ]
+
+jobs:
+  install-nix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          config: |
+            Host prod-server
+              HostName ${{ secrets.SERVER_ADDRESS }}
+              Port 2001
+              User root
+
+      - name: Deploy configuration
+        run: |
+          nix run nixpkgs#nixos-rebuild -- switch \
+            --flake .#o11y \
+            --target-host prod-server

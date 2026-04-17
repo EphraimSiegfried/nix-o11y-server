@@ -1,0 +1,44 @@
+name: "Daily Update and Deploy"
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Update Flake
+        run: nix flake update
+
+      - name: Commit and Push flake.lock
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "flake update"
+          file_pattern: flake.lock
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          config: |
+            Host prod-server
+              HostName ${{ secrets.SERVER_ADDRESS }}
+              Port 2001
+              User root
+
+      - name: Deploy configuration
+        run: |
+          nix run nixpkgs#nixos-rebuild -- switch \
+            --flake .#o11y \
+            --target-host prod-server
