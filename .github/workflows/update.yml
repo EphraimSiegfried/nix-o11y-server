@@ -20,12 +20,6 @@ jobs:
       - name: Update Flake
         run: nix flake update
 
-      - name: Commit and Push flake.lock
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "flake update"
-          file_pattern: flake.lock
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -42,3 +36,10 @@ jobs:
           nix run nixpkgs#nixos-rebuild -- switch \
             --flake .#o11y \
             --target-host prod-server
+
+      - name: Commit and Push flake.lock
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "flake update"
+          file_pattern: flake.lock
+
