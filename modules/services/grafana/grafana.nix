@@ -3,8 +3,8 @@
     { config, ... }:
     {
       myServices.grafana = {
-        subdomain = "grafana";
-        port = 9192;
+        subdomain = "o11y";
+        port = 9182;
       };
 
       services.grafana = {
@@ -12,7 +12,7 @@
         settings = {
           server = {
             domain = "${config.myServices.grafana.subdomain}.${config.domain}";
-            http_port = "${config.myServices.grafana.subdomain}";
+            http_port = config.myServices.grafana.port;
             addr = "127.0.0.1";
           };
           security = {
@@ -35,12 +35,12 @@
                   url = "http://127.0.0.1:${toString config.services.prometheus.port}";
                   isDefault = true;
                 }
-                {
-                  name = "Loki";
-                  type = "loki";
-                  access = "proxy";
-                  url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
-                }
+                # {
+                #   name = "Loki";
+                #   type = "loki";
+                #   access = "proxy";
+                #   url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
+                # }
               ];
             };
           };
@@ -49,6 +49,10 @@
               {
                 name = "Node Exporter";
                 options.path = ./dashboards/node-exporter-full.json;
+              }
+              {
+                name = "Caddy";
+                options.path = ./dashboards/caddy.json;
               }
             ];
           };

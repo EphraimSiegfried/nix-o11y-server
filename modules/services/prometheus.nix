@@ -1,6 +1,6 @@
 {
   flake.modules.nixos.prometheus =
-    { config, ... }:
+    { config, lib, ... }:
     {
       services.prometheus = {
         enable = true;
@@ -19,6 +19,15 @@
             static_configs = [
               {
                 targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
+              }
+            ];
+          }
+          {
+            job_name = "caddy";
+            scrape_interval = "15s";
+            static_configs = [
+              {
+                targets = [ "127.0.0.1:2019" ];
               }
             ];
           }

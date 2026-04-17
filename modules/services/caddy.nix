@@ -31,6 +31,9 @@
         globalConfig = ''
           acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
           skip_install_trust
+          metrics {
+            per_host
+          }
         '';
         environmentFile = config.sops.templates."caddy.env".path;
         virtualHosts = lib.mkMerge (lib.mapAttrsToList mkVhost conf.myServices);
