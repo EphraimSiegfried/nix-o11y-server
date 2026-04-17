@@ -2,14 +2,14 @@
 
 The Server contains the following stack:
 
-| Service              | Purpose                      |
-| -------------------- | ---------------------------- |
-| Gatus                | Uptime Monitoring            |
-| Grafana (TODO)       | Dashboard for Metrics & Logs |
-| Loki (TODO)          | Log Aggregator               |
-| Prometheus (TODO)    | Metrics Aggregator           |
-| Alertmanager (TODO)  | For triggering alerts        |
-| Matrix Server (TODO) | For sending alerts           |
+| Service             | Purpose                      |
+| ------------------- | ---------------------------- |
+| Gatus               | Uptime Monitoring            |
+| Matrix Server       | For sending alerts           |
+| Grafana (TODO)      | Dashboard for Metrics & Logs |
+| Loki (TODO)         | Log Aggregator               |
+| Prometheus (TODO)   | Metrics Aggregator           |
+| Alertmanager (TODO) | For triggering alerts        |
 
 The configuration follows the
 [Dendritic Pattern](https://github.com/Doc-Steve/dendritic-design-with-flake-parts).
