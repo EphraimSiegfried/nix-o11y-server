@@ -53,7 +53,7 @@ let
     };
 in
 {
-  flake.modules.nixos.config = {
+  flake.modules.nixos.options = {
     options = {
       primaryUser = lib.mkOption {
         type = lib.types.submodule userOpts;

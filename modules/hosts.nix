@@ -12,7 +12,7 @@
         user
         gatus
         matrix
-        config
+        options
         prometheus
         grafana
         promtail
