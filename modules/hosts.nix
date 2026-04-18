@@ -18,6 +18,7 @@
         promtail
         loki
         alertmanager
+        networking
       ];
     in
     {
