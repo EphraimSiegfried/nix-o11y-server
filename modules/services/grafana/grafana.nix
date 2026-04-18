@@ -50,10 +50,6 @@
                 name = "Node Exporter";
                 options.path = ./dashboards/node-exporter-full.json;
               }
-              {
-                name = "Caddy";
-                options.path = ./dashboards/caddy.json;
-              }
             ];
           };
         };
