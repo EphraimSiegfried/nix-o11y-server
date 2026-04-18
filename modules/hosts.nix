@@ -17,6 +17,7 @@
         grafana
         promtail
         loki
+        alertmanager
       ];
     in
     {
