@@ -15,6 +15,8 @@
         config
         prometheus
         grafana
+        promtail
+        loki
       ];
     in
     {

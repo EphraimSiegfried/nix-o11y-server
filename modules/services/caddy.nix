@@ -11,6 +11,12 @@
         "${svc.subdomain}.${config.domain}" = {
           extraConfig = ''
             reverse_proxy http://localhost:${toString svc.port}
+            log {
+                output file /var/log/caddy/a-${svc.subdomain}.${config.domain}.log {
+                  mode 640
+                }
+                format json
+            }
           '';
         };
       };
