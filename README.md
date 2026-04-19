@@ -21,7 +21,7 @@ The configuration follows the
 You can run the server inside a VM with
 
 ```
-nix run .#vm
+nix run github:EphraimSiegfried/nix-o11y-server#vm
 ```
 
 After starting the VM you should be able to access all services on the host
