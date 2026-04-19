@@ -16,7 +16,7 @@
             addr = "127.0.0.1";
           };
           security = {
-            admin_user = config.primaryUser.username;
+            admin_user = "zeus";
             admin_email = config.primaryUser.email;
             admin_password = "$__file{${config.sops.secrets."admin-pw".path}}";
           };
