@@ -19,6 +19,7 @@
         loki
         alertmanager
         networking
+        vpn
       ];
     in
     {

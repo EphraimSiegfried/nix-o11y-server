@@ -1,5 +1,7 @@
 # NixOS Server containing an Observability stack
 
+This server is meant to monitor a second media server and itself.
+
 The Server contains the following stack:
 
 | Service       | Purpose                      |
