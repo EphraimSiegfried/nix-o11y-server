@@ -3,7 +3,7 @@
     { config, ... }:
     {
       myServices.grafana = {
-        subdomain = "o11y";
+        subdomain = "grafana";
         port = 9182;
       };
 
