@@ -20,6 +20,18 @@ jobs:
       - name: Update Flake
         run: nix flake update
 
+      - name: Update Caddy plugin hash
+        run: |
+          echo -n "" > modules/services/caddy-plugins-hash
+          HASH=$(nix build '.#nixosConfigurations.o11y.config.services.caddy.package' 2>&1 | grep -oP 'got:\s+\Ksha256-\S+' || true)
+          if [ -n "$HASH" ]; then
+            echo -n "$HASH" > modules/services/caddy-plugins-hash
+            echo "Updated caddy plugin hash to $HASH"
+          else
+            echo "::error::Failed to compute caddy plugin hash"
+            exit 1
+          fi
+
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -41,5 +53,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "flake update"
-          file_pattern: flake.lock
+          file_pattern: flake.lock modules/services/caddy-plugins-hash
 
