@@ -5,6 +5,19 @@
     "aarch64-linux"
   ];
 
+  flake.deploy.nodes.o11y = {
+    hostname = "o11y";
+    sshUser = "root";
+    profiles.system = {
+      user = "root";
+      path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.o11y;
+    };
+  };
+
+  flake.checks = builtins.mapAttrs
+    (system: deployLib: deployLib.deployChecks inputs.self.deploy)
+    inputs.deploy-rs.lib;
+
   flake.nixosConfigurations =
     let
       main_modules = with inputs.self.modules.nixos; [
@@ -20,6 +33,7 @@
         alertmanager
         networking
         vpn
+        secrets
       ];
     in
     {
@@ -30,7 +44,6 @@
           main_modules
           ++ [
             disk
-            secrets
             caddy
             {
               system.stateVersion = "25.11";

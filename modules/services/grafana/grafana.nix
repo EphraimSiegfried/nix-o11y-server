@@ -19,6 +19,7 @@
             admin_user = "zeus";
             admin_email = config.primaryUser.email;
             admin_password = "$__file{${config.sops.secrets."admin-pw".path}}";
+            secret_key = "$__file{${config.sops.secrets."grafana/secret_key".path}}";
           };
         };
 
@@ -56,6 +57,9 @@
       };
 
       sops.secrets."admin-pw" = {
+        owner = "grafana";
+      };
+      sops.secrets."grafana/secret_key" = {
         owner = "grafana";
       };
     };

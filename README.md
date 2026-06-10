@@ -12,6 +12,7 @@ The Server contains the following stack:
 | Loki          | Log Aggregator               |
 | Prometheus    | Metrics Aggregator           |
 | Alertmanager  | For triggering alerts        |
+| Alloy         | Log Collection (Loki)        |
 
 The configuration follows the
 [Dendritic Pattern](https://github.com/Doc-Steve/dendritic-design-with-flake-parts).
@@ -53,8 +54,10 @@ nix run github:nix-community/nixos-anywhere -- \
 
 ### Remote Deployment
 
-Update your machine remotely with:
+Update your machine remotely with [deploy-rs](https://github.com/serokell/deploy-rs):
 
 ```bash
-nixos-rebuild --flake .#o11y --target-host <ip address> --sudo --ask-sudo-password switch
+nix run github:serokell/deploy-rs -- .#o11y
 ```
+
+This requires an SSH config entry for `o11y` pointing to the server.
