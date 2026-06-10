@@ -2,20 +2,19 @@
   flake.modules.nixos.user =
     { config, ... }:
     {
-      time.timeZone = config.primaryUser.timeZone;
+      time.timeZone = config.admin.timeZone;
       users.users = {
-        ${config.primaryUser.username} = {
+        ${config.admin.name} = {
           isNormalUser = true;
-          description = "${config.primaryUser.firstName} ${config.primaryUser.lastName}";
           extraGroups = [
             "networkmanager"
             "wheel"
           ];
-          openssh.authorizedKeys.keys = config.primaryUser.publicSSHKeys;
+          openssh.authorizedKeys.keys = config.admin.publicSSHKeys;
           initialPassword = "changeme";
         };
         "root" = {
-          openssh.authorizedKeys.keys = config.primaryUser.publicSSHKeys;
+          openssh.authorizedKeys.keys = config.admin.publicSSHKeys;
         };
       };
     };

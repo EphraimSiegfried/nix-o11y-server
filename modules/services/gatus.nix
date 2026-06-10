@@ -4,10 +4,10 @@
     let
       main_domain = "qew.ch";
       default_interval = "1m";
-      matrix_url = "https://${config.myServices.matrix.subdomain}.${config.domain}";
+      matrix_url = "https://${config.webServices.matrix.subdomain}.${config.domain}";
     in
     {
-      myServices.gatus = {
+      webServices.gatus = {
         subdomain = "health";
         port = 9192;
       };
@@ -16,7 +16,7 @@
         openFirewall = true;
         configFile = config.sops.templates."gatus.yaml".path;
         settings = {
-          web.port = config.myServices.gatus.port;
+          web.port = config.webServices.gatus.port;
 
           alerting.matrix = {
             server-url = matrix_url;

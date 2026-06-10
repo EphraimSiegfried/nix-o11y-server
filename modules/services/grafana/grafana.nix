@@ -2,7 +2,7 @@
   flake.modules.nixos.grafana =
     { config, ... }:
     {
-      myServices.grafana = {
+      webServices.grafana = {
         subdomain = "grafana";
         port = 9182;
       };
@@ -11,13 +11,13 @@
         enable = true;
         settings = {
           server = {
-            domain = "${config.myServices.grafana.subdomain}.${config.domain}";
-            http_port = config.myServices.grafana.port;
+            domain = "${config.webServices.grafana.subdomain}.${config.domain}";
+            http_port = config.webServices.grafana.port;
             addr = "127.0.0.1";
           };
           security = {
             admin_user = "zeus";
-            admin_email = config.primaryUser.email;
+            admin_email = config.admin.email;
             admin_password = "$__file{${config.sops.secrets."admin-pw".path}}";
             secret_key = "$__file{${config.sops.secrets."grafana/secret_key".path}}";
           };

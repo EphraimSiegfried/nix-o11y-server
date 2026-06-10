@@ -8,15 +8,16 @@
   flake.deploy.nodes.o11y = {
     hostname = "o11y";
     sshUser = "root";
+    remoteBuild = true;
     profiles.system = {
       user = "root";
       path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.o11y;
     };
   };
 
-  flake.checks = builtins.mapAttrs
-    (system: deployLib: deployLib.deployChecks inputs.self.deploy)
-    inputs.deploy-rs.lib;
+  flake.checks = builtins.mapAttrs (
+    system: deployLib: deployLib.deployChecks inputs.self.deploy
+  ) inputs.deploy-rs.lib;
 
   flake.nixosConfigurations =
     let
@@ -25,7 +26,7 @@
         user
         gatus
         matrix
-        options
+        settings
         prometheus
         grafana
         promtail
@@ -61,7 +62,7 @@
             vm
             caddy-vm
             {
-              domain = "localhost";
+              domain = inputs.nixpkgs.lib.mkForce "localhost";
               system.stateVersion = "25.11";
               networking.hostName = "vm";
             }

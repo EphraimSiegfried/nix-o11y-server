@@ -33,7 +33,7 @@
           plugins = [ "github.com/caddy-dns/cloudflare@v0.2.4" ];
           hash = builtins.readFile ./caddy-plugins-hash;
         };
-        email = conf.primaryUser.email;
+        email = conf.admin.email;
         globalConfig = ''
           acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
           skip_install_trust
@@ -42,7 +42,7 @@
           }
         '';
         environmentFile = config.sops.templates."caddy.env".path;
-        virtualHosts = lib.mkMerge (lib.mapAttrsToList mkVhost conf.myServices);
+        virtualHosts = lib.mkMerge (lib.mapAttrsToList mkVhost conf.webServices);
       };
 
       systemd.services.caddy.serviceConfig.Path = [ pkgs.nssTools ];
@@ -78,7 +78,7 @@
     {
       services.caddy = {
         enable = true;
-        virtualHosts = lib.mkMerge (lib.mapAttrsToList mkVhost config.myServices);
+        virtualHosts = lib.mkMerge (lib.mapAttrsToList mkVhost config.webServices);
       };
       systemd.services.caddy.serviceConfig.Path = [ pkgs.nssTools ];
     };

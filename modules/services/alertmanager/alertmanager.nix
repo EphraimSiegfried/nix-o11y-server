@@ -64,9 +64,9 @@
       };
       services.matrix-alertmanager = {
         enable = true;
-        homeserverUrl = "https://${config.myServices.matrix.subdomain}.${config.domain}";
+        homeserverUrl = "https://${config.webServices.matrix.subdomain}.${config.domain}";
         port = 9111;
-        matrixUser = "@bot:${config.myServices.matrix.subdomain}.${config.domain}";
+        matrixUser = "@bot:${config.webServices.matrix.subdomain}.${config.domain}";
         tokenFile = config.sops.secrets."matrix/access_token".path;
         secretFile = config.sops.secrets."alertmanager/secret".path;
         matrixRooms = [

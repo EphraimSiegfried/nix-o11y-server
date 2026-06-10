@@ -7,21 +7,12 @@ let
     { ... }:
     {
       options = {
-        username = lib.mkOption {
+        name = lib.mkOption {
           type = lib.types.str;
           default = "siegi";
         };
-        firstName = lib.mkOption {
-          type = lib.types.str;
-          default = "Ephraim";
-        };
-        lastName = lib.mkOption {
-          type = lib.types.str;
-          default = "Siegfried";
-        };
         email = lib.mkOption {
           type = lib.types.str;
-          default = "ephraim.siegfried@proton.me";
         };
         publicSSHKeys = lib.mkOption {
           type = lib.types.listOf lib.types.str;
@@ -53,21 +44,32 @@ let
     };
 in
 {
-  flake.modules.nixos.options = {
+  flake.modules.nixos.settings = {
     options = {
-      primaryUser = lib.mkOption {
+      admin = lib.mkOption {
         type = lib.types.submodule userOpts;
         default = { };
       };
       domain = lib.mkOption {
         type = lib.types.str;
-        default = "qew.ch";
       };
-      myServices = lib.mkOption {
+      webServices = lib.mkOption {
         type = lib.types.attrsOf (lib.types.submodule serviceOpts);
         default = { };
-        description = "Services to expose via nginx";
       };
+    };
+
+    config = {
+      admin = {
+        name = "siegi";
+        email = "ephraim.siegfried@proton.me";
+        publicSSHKeys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGdANrCkeXTrZha/w3pvg/vCZWmuRsy7cI6PmgVfWH8c siegi@blinkybill"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP1R2gEuXslK413gWBE4tOA894zO/MkhZrAK/LyRcsmo siegi@thymian"
+        ];
+        timeZone = "Europe/Zurich";
+      };
+      domain = "qew.ch";
     };
   };
 }
