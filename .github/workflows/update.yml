@@ -42,7 +42,7 @@ jobs:
               User root
 
       - name: Deploy configuration
-        run: nix run github:serokell/deploy-rs -- .#o11y
+        run: nix run github:serokell/deploy-rs -- .#o11y --remote-build
 
       - name: Commit and Push flake.lock
         uses: stefanzweifel/git-auto-commit-action@v5
