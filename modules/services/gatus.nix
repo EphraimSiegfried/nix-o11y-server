@@ -18,6 +18,11 @@
         settings = {
           web.port = config.webServices.gatus.port;
 
+          storage = {
+            type = "sqlite";
+            path = "/var/lib/gatus/gatus.db";
+          };
+
           alerting.matrix = {
             server-url = matrix_url;
             default-alert = {
