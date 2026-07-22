@@ -155,8 +155,8 @@ groups:
           summary: Host SystemD service crashed (instance {{ $labels.instance }})
           description: SystemD service crashed\n  VALUE = {{ $value }}
       - alert: HostPhysicalComponentTooHot
-        expr: node_hwmon_temp_celsius > 75
-        for: 5m
+        expr: avg_over_time(node_hwmon_temp_celsius[10m]) > 90
+        for: 0m
         labels:
           severity: warning
         annotations:
