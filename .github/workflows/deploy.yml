@@ -25,13 +25,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
           config: |
-            Host prod-server
+            Host o11y
               HostName ${{ secrets.SERVER_ADDRESS }}
               Port 2001
               User root
 
       - name: Deploy configuration
-        run: |
-          nix run nixpkgs#nixos-rebuild -- switch \
-            --flake .#o11y \
-            --target-host prod-server
+        run: nix run github:serokell/deploy-rs -- .#o11y --remote-build
